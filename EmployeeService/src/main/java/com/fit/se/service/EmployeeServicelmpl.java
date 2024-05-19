@@ -3,6 +3,7 @@ package com.fit.se.service;
 import com.fit.se.entity.Department;
 import com.fit.se.entity.Employee;
 import com.fit.se.repository.EmployeeRepository; // Chỉnh sửa tên repository
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
     private EmployeeRepository employeeRepository; // Chỉnh sửa tên repository
     private RestTemplate restTemplate;
 
+    @Retry(name = "retryApi")
     @Override
     public Employee saveEmployee(Employee employee) {
         ResponseEntity<Department> responseEntity = restTemplate
@@ -29,22 +31,25 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
         return employeeRepository.save(employee);
     }
 
+    @Retry(name = "retryApi")
     @Override
     public Employee getEmployeeById(int id) { // Chỉnh sửa tên phương thức
         return employeeRepository.findById(id).orElse(null); // Sử dụng orElse để tránh trả về null nếu không tìm thấy
     }
 
+    @Retry(name = "retryApi")
     @Override
     public List<Employee> getAllEmployee() {
         return employeeRepository.findAll();
     }
 
-
+    @Retry(name = "retryApi")
     @Override
     public void deleteEmployeeById(int id) {
         employeeRepository.deleteById(id);
     }
 
+    @Retry(name = "retryApi")
     @Override
     public Employee updateEmployeeById(int id, Employee newEmployee) {
         Employee tempEmployee = employeeRepository.findById(id).orElse(null); // Sử dụng orElse để tránh trả về null nếu không tìm thấy
