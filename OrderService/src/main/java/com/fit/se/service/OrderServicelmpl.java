@@ -1,8 +1,8 @@
 package com.fit.se.service;
 
-import com.fit.se.entity.Clothing;
 import com.fit.se.entity.Customer;
 import com.fit.se.entity.Order;
+import com.fit.se.repository.CustomerRepository;
 import com.fit.se.repository.OrderRepository; // Chỉnh sửa tên repository
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,6 +18,8 @@ public class OrderServicelmpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
     private RestTemplate restTemplate;
 
     @Override
@@ -27,6 +28,7 @@ public class OrderServicelmpl implements OrderService {
                 .getForEntity("http://localhost:8083/customers/" + order.getCustomer().getId(),
                         Customer.class);
         Customer customer = responseEntity.getBody();
+        customerRepository.save(customer);
         order.setCustomer(customer);
         return orderRepository.save(order);
     }

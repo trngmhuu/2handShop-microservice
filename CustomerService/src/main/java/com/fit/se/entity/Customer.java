@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "customers")
-@Getter @Setter
+@Getter@Setter
 public class Customer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -20,7 +20,10 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String name;
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String gender;
     private String phoneNumber;
     private String email;
 

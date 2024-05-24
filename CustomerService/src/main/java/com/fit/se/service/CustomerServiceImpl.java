@@ -1,13 +1,10 @@
 package com.fit.se.service;
 
-import com.fit.se.entity.Clothing;
 import com.fit.se.entity.Customer;
-import com.fit.se.entity.Order;
 import com.fit.se.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -45,7 +42,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer updateCustomerById(int id, Customer customer) {
         Customer tempCustomer = customerRepository.findById(id).get();
-        tempCustomer.setName(customer.getName());
+        tempCustomer.setFirstName(customer.getFirstName());
+        tempCustomer.setFirstName(customer.getLastName());
+        tempCustomer.setAge(customer.getAge());
+        tempCustomer.setGender(customer.getGender());
         tempCustomer.setEmail(customer.getEmail());
         tempCustomer.setPhoneNumber(customer.getPhoneNumber());
         return customerRepository.save(tempCustomer);

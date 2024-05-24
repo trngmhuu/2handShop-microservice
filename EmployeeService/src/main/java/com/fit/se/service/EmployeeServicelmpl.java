@@ -2,6 +2,7 @@ package com.fit.se.service;
 
 import com.fit.se.entity.Department;
 import com.fit.se.entity.Employee;
+import com.fit.se.repository.DepartmentRepository;
 import com.fit.se.repository.EmployeeRepository; // Chỉnh sửa tên repository
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,8 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
 
     @Autowired
     private EmployeeRepository employeeRepository; // Chỉnh sửa tên repository
+    @Autowired
+    private DepartmentRepository departmentRepository;
     private RestTemplate restTemplate;
 
     @Retry(name = "retryApi")
@@ -27,6 +30,7 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
                 .getForEntity("http://localhost:8080/departments/" + employee.getDepartment().getId(),
                         Department.class);
         Department department = responseEntity.getBody();
+        departmentRepository.save(department);
         employee.setDepartment(department);
         return employeeRepository.save(employee);
     }

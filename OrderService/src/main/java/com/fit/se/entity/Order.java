@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "orders")
-@Getter @Setter
+@Getter@Setter
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 1L;
