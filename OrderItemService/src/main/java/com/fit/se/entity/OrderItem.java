@@ -30,5 +30,4 @@ public class OrderItem implements Serializable {
     @JoinColumn(name = "clothing_id", nullable = false)
     private Clothing clothing;
 
-    // Other fields and methods
 }

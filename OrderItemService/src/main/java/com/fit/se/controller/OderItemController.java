@@ -29,8 +29,8 @@ public class OderItemController {
 
     @GetMapping
     public ResponseEntity<?> getAllOrderItems() {
-        List<OrderItem> userList = orderItemRedisRepository.findAll();
-        return ResponseEntity.ok(userList);
+        List<OrderItem> orderItemList = orderItemRedisRepository.findAll();
+        return ResponseEntity.ok(orderItemList);
     }
 
     @GetMapping("/{id}")
