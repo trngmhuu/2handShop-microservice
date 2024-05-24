@@ -4,6 +4,7 @@ import com.fit.se.entity.Customer;
 import com.fit.se.entity.Order;
 import com.fit.se.repository.CustomerRepository;
 import com.fit.se.repository.OrderRepository; // Chỉnh sửa tên repository
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class OrderServicelmpl implements OrderService {
     private CustomerRepository customerRepository;
     private RestTemplate restTemplate;
 
+    @Retry(name = "retryApi")
     @Override
     public Order saveOrder(Order order) {
         ResponseEntity<Customer> responseEntity = restTemplate
@@ -33,21 +35,25 @@ public class OrderServicelmpl implements OrderService {
         return orderRepository.save(order);
     }
 
+    @Retry(name = "retryApi")
     @Override
     public Order getOrderById(int id) {
         return orderRepository.findById(id).get();
     }
 
+    @Retry(name = "retryApi")
     @Override
     public List<Order> getAllOrder() {
         return orderRepository.findAll();
     }
 
+    @Retry(name = "retryApi")
     @Override
     public void deleteOrderById(int id) {
         orderRepository.deleteById(id);
     }
 
+    @Retry(name = "retryApi")
     @Override
     public Order updateOrderById(int id, Order newOrder) {
         Order tempOrder = orderRepository.findById(id).get();
