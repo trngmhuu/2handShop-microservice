@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.fit.se</groupId>
-	<artifactId>UserService</artifactId>
+	<artifactId>EmployeeService</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>UserService</name>
 	<description>Demo project for Spring Boot</description>

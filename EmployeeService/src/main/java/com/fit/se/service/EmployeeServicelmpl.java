@@ -4,6 +4,7 @@ import com.fit.se.entity.Department;
 import com.fit.se.entity.Employee;
 import com.fit.se.repository.DepartmentRepository;
 import com.fit.se.repository.EmployeeRepository; // Chỉnh sửa tên repository
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.retry.annotation.Retry;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
     private RestTemplate restTemplate;
 
     @Retry(name = "retryApi")
+    @CircuitBreaker(name = "employeeService")
     @Override
     public Employee saveEmployee(Employee employee) {
         ResponseEntity<Department> responseEntity = restTemplate
@@ -35,19 +37,16 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
         return employeeRepository.save(employee);
     }
 
-    @Retry(name = "retryApi")
     @Override
-    public Employee getEmployeeById(int id) { // Chỉnh sửa tên phương thức
-        return employeeRepository.findById(id).orElse(null); // Sử dụng orElse để tránh trả về null nếu không tìm thấy
+    public Employee getEmployeeById(int id) {
+        return employeeRepository.findById(id).orElse(null);
     }
 
-    @Retry(name = "retryApi")
     @Override
     public List<Employee> getAllEmployee() {
         return employeeRepository.findAll();
     }
 
-    @Retry(name = "retryApi")
     @Override
     public void deleteEmployeeById(int id) {
         employeeRepository.deleteById(id);
@@ -56,8 +55,8 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
     @Retry(name = "retryApi")
     @Override
     public Employee updateEmployeeById(int id, Employee newEmployee) {
-        Employee tempEmployee = employeeRepository.findById(id).orElse(null); // Sử dụng orElse để tránh trả về null nếu không tìm thấy
-        if (tempEmployee != null) { // Kiểm tra xem nhân viên có tồn tại không trước khi cập nhật
+        Employee tempEmployee = employeeRepository.findById(id).orElse(null);
+        if (tempEmployee != null) {
             tempEmployee.setFirstName(newEmployee.getFirstName());
             tempEmployee.setLastName(newEmployee.getLastName());
             tempEmployee.setAge(newEmployee.getAge());
@@ -71,5 +70,6 @@ public class EmployeeServicelmpl implements EmployeeService { // Đổi tên th�
         }
         return null;
     }
+
 
 }
