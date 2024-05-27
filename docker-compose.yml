@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  config-server:
+    image: openjdk:17
+    container_name: config-server
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./ConfigServer/target:/app
+    entrypoint: ["java", "-jar", "/app/ConfigServer-0.0.1-SNAPSHOT.jar"]
+
+  eureka-server:
+    image: openjdk:17
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    volumes:
+      - ./EurekaServer/target:/app
+    entrypoint: ["java", "-jar", "/app/EurekaServer-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - config-server
+
+  api-gateway:
+    image: openjdk:17
+    container_name: api-gateway
+    ports:
+      - "9191:9191"
+    volumes:
+      - ./APIGateway/target:/app
+    entrypoint: ["java", "-jar", "/app/APIGateway-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server
+
+  department-service:
+    image: openjdk:17
+    container_name: department-service
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./DepartmentService/target:/app
+    entrypoint: ["java", "-jar", "/app/DepartmentService-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server
+
+  employee-service:
+    image: openjdk:17
+    container_name: employee-service
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./EmployeeService/target:/app
+    entrypoint: ["java", "-jar", "/app/EmployeeService-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server
+
+  clothing-service:
+    image: openjdk:17
+    container_name: clothing-service
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./ClothingService/target:/app
+    entrypoint: ["java", "-jar", "/app/ClothingService-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server
+
+  customer-service:
+    image: openjdk:17
+    container_name: customer-service
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./CustomerService/target:/app
+    entrypoint: ["java", "-jar", "/app/CustomerService-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server
+
+  order-service:
+    image: openjdk:17
+    container_name: order-service
+    ports:
+      - "8084:8084"
+    volumes:
+      - ./OrderService/target:/app
+    entrypoint: ["java", "-jar", "/app/OrderService-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server
+
+  order-item-service:
+    image: openjdk:17
+    container_name: order-item-service
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./OrderItemService/target:/app
+    entrypoint: ["java", "-jar", "/app/OrderItemService-0.0.1-SNAPSHOT.jar"]
+    depends_on:
+      - eureka-server
+      - config-server

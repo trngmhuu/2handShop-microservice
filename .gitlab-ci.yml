@@ -1,0 +1,26 @@
+stages:
+  - merge
+
+merge_huu_branch_to_main:
+  stage: merge
+  image: alpine:latest
+  before_script:
+    - apk add --no-cache git
+  script:
+    - git config --global user.email "minhhuu0705@gmail.com"
+    - git config --global user.name "trngmhuu"
+    - git fetch
+    - git checkout main            
+    - git pull origin main        
+    - git fetch
+    - git checkout huu-branch
+    - git pull origin huu-branch
+    - git merge main
+    - git fetch
+    - git checkout main
+    - git merge huu-branch
+    - git push https://${CI_GITLAB_USER}:${CI_GITLAB_TOKEN}@${CI_REPOSITORY_URL#https://} main
+
+  only:
+    - huu-branch
+
